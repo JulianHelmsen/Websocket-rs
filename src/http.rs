@@ -294,7 +294,7 @@ fn parse_headers(mut headers_lines : &str, offset: usize) -> Result<Vec<Header>,
     return Err(ParseError::InvalidRequest(String::from("Didn't find two consecutives CRLFs")));
 }
 
-fn parse_request_line<'a>(text : &'a str) -> Result<RequestLine, ParseError> {
+fn parse_request_line(text : &str) -> Result<RequestLine, ParseError> {
     let line = if let Some(line_end) = text.find("\r\n") {
         &text[..line_end]
     }else{
