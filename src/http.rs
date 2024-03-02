@@ -159,7 +159,7 @@ impl Request {
         })
     }
 
-    pub fn headers<'a>(self: &'a Self) -> RequestHeaderIterator<'a> {
+    pub fn headers(self: &Self) -> RequestHeaderIterator {
         return RequestHeaderIterator{raw_request: &self.raw_request, headers: &self.headers};
     }
 
