@@ -16,7 +16,6 @@ fn handle_ws<Connection: std::io::Read + std::io::Write>(mut socket : ws::Websoc
                     },
                     ws::Error::WebsocketError(ws_error) => {
                         eprintln!("Websocket error: {ws_error}");
-                        // TODO: close connection
                         socket.close(Some(1002)).ok();
                         return;
                     },
