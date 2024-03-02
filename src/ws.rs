@@ -3,7 +3,7 @@ use crate::http;
 use sha1::{Sha1, Digest};
 
 pub struct Websocket <Connection : std::io::Read + std::io::Write> {
-    pub closed : bool,
+    closed : bool,
     connection : Connection,
     incomplete_fragment: IncompleteFragment,
     incomplete_message: IncompleteMessage,
@@ -390,6 +390,8 @@ impl From<std::io::Error> for Error {
 }
 
 impl<Connection: std::io::Read + std::io::Write> Websocket<Connection> {
+
+    pub fn is_closed(&self) -> bool { self.closed }
 
     pub fn read(&mut self) -> Result<Vec<Message>, Error> {
         let mut buffer = [0; 1024];

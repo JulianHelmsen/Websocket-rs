@@ -6,7 +6,7 @@ use std::thread;
 use std::io::Read;
 
 fn handle_ws<Connection: std::io::Read + std::io::Write>(mut socket : ws::Websocket<Connection>) {
-    while !socket.closed {
+    while !socket.is_closed() {
         let messages = match socket.read() {
             Err(e) => {
                 match e {
