@@ -29,6 +29,12 @@ pub enum Message {
     Close(Option<u16>),
 }
 
+#[derive(Debug)]
+pub enum Error {
+    IoError(std::io::Error),
+    WebsocketError(&'static str),
+}
+
 
 
 fn base64_convert(block : u8) -> char {
@@ -366,12 +372,6 @@ impl Message {
             }
         }
     }
-}
-
-#[derive(Debug)]
-pub enum Error {
-    IoError(std::io::Error),
-    WebsocketError(&'static str),
 }
 
 impl std::fmt::Display for Error {
