@@ -84,6 +84,12 @@ fn send_file(version: &str, filepath: &str) -> Option<http::ResponseComplete> {
     Some(response)
 }
 
+fn file_not_found(version: &str) -> http::ResponseComplete {
+    http::Response::status(version, "Not Ok", 404)
+        .header("Content-Type", "text/html")
+        .payload(b"<b>File Not Found: 404</b>")
+}
+
 fn handle_connection<Connection: std::io::Read + std::io::Write>(mut connection : Connection) {
     let req = match http::parse_request(&mut connection) {
         Ok(req) => req,
@@ -100,12 +106,11 @@ fn handle_connection<Connection: std::io::Read + std::io::Write>(mut connection 
         if let Some(response) = send_file(req.get_http_version(), path) {
             response.send(&mut connection);
             return;
+        }else{
+            file_not_found(req.get_http_version()).send(&mut connection);
         }
     }else{
-        http::Response::status(req.get_http_version(), "Not Ok", 404)
-            .header("Content-Type", "text/html")
-            .payload(b"<b>File Not Found: 404</b>")
-            .send(&mut connection);
+        file_not_found(req.get_http_version()).send(&mut connection);
     }
     
 }
