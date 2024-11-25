@@ -161,7 +161,7 @@ impl IncompleteFragment {
 
     fn try_append_nbytes(&mut self, n : usize, bytes: &mut &[u8]) -> bool {
         for i in 0..n {
-            if bytes.len() == 0 {
+            if i >= bytes.len() {
                 *bytes = &(*bytes)[i..];
                 return false;
             }
@@ -441,7 +441,8 @@ impl<Connection: std::io::Read + std::io::Write> Websocket<Connection> {
 
 
     fn send(&mut self, opcode : u8, mut data : &[u8]) -> Result<(), Error> {
-        let mut header = [0u8, 16];
+        let mut header : [u8; 16] = [0; 16];
+        assert!((&header).len() == 16);
 
         header[0] = (1 << 7) | (opcode & 0xF);
 
